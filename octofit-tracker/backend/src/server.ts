@@ -9,7 +9,7 @@ import User from './models/User.js';
 import Workout from './models/Workout.js';
 
 dotenv.config();
-
+// testing
 const app = express();
 const PORT = process.env.PORT || 8000;
 const codespaceName = process.env.CODESPACE_NAME;
