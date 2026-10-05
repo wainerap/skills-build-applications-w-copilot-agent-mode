@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchFromApi } from '../utils/api';
+import { API_BASE_URL, parseApiResponse } from '../utils/api';
 
 export default function Teams() {
   const [teams, setTeams] = useState([]);
@@ -10,8 +10,12 @@ export default function Teams() {
     const loadTeams = async () => {
       try {
         setLoading(true);
-        const data = await fetchFromApi('/teams/');
-        setTeams(data);
+        const response = await fetch(`${API_BASE_URL}/api/teams/`);
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+        const data = await response.json();
+        setTeams(parseApiResponse(data));
         setError(null);
       } catch (err) {
         setError(err.message);

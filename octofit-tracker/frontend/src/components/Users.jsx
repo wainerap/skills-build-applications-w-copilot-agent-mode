@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchFromApi } from '../utils/api';
+import { API_BASE_URL, parseApiResponse } from '../utils/api';
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -10,8 +10,12 @@ export default function Users() {
     const loadUsers = async () => {
       try {
         setLoading(true);
-        const data = await fetchFromApi('/users/');
-        setUsers(data);
+        const response = await fetch(`${API_BASE_URL}/api/users/`);
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+        const data = await response.json();
+        setUsers(parseApiResponse(data));
         setError(null);
       } catch (err) {
         setError(err.message);

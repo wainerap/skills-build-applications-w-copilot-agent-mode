@@ -8,11 +8,11 @@ const getBaseUrl = () => {
   const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
   
   if (codespaceName) {
-    return `https://${codespaceName}-8000.app.github.dev/api`;
+    return `https://${codespaceName}-8000.app.github.dev`;
   }
   
   // Fallback to localhost for local development
-  return 'http://localhost:8000/api';
+  return 'http://localhost:8000';
 };
 
 export const API_BASE_URL = getBaseUrl();
@@ -39,7 +39,7 @@ export const parseApiResponse = (data) => {
 
 /**
  * Fetches data from API endpoint
- * @param {string} endpoint - API endpoint (e.g., '/activities')
+ * @param {string} endpoint - Full API endpoint (e.g., '/api/activities/')
  * @returns {Promise<Array>} Array of items from API
  */
 export const fetchFromApi = async (endpoint) => {

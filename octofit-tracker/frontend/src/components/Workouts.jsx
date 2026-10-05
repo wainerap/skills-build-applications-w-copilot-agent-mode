@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchFromApi } from '../utils/api';
+import { API_BASE_URL, parseApiResponse } from '../utils/api';
 
 export default function Workouts() {
   const [workouts, setWorkouts] = useState([]);
@@ -10,8 +10,12 @@ export default function Workouts() {
     const loadWorkouts = async () => {
       try {
         setLoading(true);
-        const data = await fetchFromApi('/workouts/');
-        setWorkouts(data);
+        const response = await fetch(`${API_BASE_URL}/api/workouts/`);
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+        const data = await response.json();
+        setWorkouts(parseApiResponse(data));
         setError(null);
       } catch (err) {
         setError(err.message);

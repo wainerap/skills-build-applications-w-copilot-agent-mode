@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchFromApi } from '../utils/api';
+import { API_BASE_URL, parseApiResponse } from '../utils/api';
 
 export default function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState([]);
@@ -10,8 +10,12 @@ export default function Leaderboard() {
     const loadLeaderboard = async () => {
       try {
         setLoading(true);
-        const data = await fetchFromApi('/leaderboard/');
-        setLeaderboard(data);
+        const response = await fetch(`${API_BASE_URL}/api/leaderboard/`);
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+        const data = await response.json();
+        setLeaderboard(parseApiResponse(data));
         setError(null);
       } catch (err) {
         setError(err.message);
